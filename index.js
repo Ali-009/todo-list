@@ -1,0 +1,1 @@
+(()=>{var __webpack_modules__={138:()=>{eval("console.log('hello from index');\n\n\n//# sourceURL=webpack://todo-list/./src/index.js?")}},__webpack_exports__={};__webpack_modules__[138]()})();
