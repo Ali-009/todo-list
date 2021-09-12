@@ -1,0 +1,1 @@
+(()=>{var __webpack_modules__={356:()=>{eval("console.log('hell from controller');\n\n\n//# sourceURL=webpack://todo-list/./src/controller.js?")}},__webpack_exports__={};__webpack_modules__[356]()})();
