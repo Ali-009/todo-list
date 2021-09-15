@@ -3,21 +3,27 @@ let project = [];
 
 export function projectFactory(name){
 
-  let todoList = [];
+  let projectIndex = localStorage.length;
 
-  //receives todo object from controller.js and pushes to a todoList in one project
+  //stores a todo in the localStorage in an appropriate project
   function storeTodoItem(todo){
 
-    //pushing todo item into an array
-    this.todoList.push(todo);
-
-    //extracting properties from the given todo item
-    for(let prop in todo){
-      //Because localStorage does not support objects, we're creating our own keys to each value
-      let key = `${this.name}.todo${this.todoList.length - 1}.${prop}`
-      localStorage.setItem(key, todo[prop]);
+    /*JSON is used here because localStorage only accepts strings. The string stored in localStorage is first retrieved and then fully updated with every call to storeTodoItem*/
+    let todoList = [];
+    if(localStorage.getItem(projectIndex)){
+      todoList = JSON.parse(localStorage.getItem(projectIndex));
     }
+
+    todoList.push(todo);
+    localStorage.setItem(projectIndex, JSON.stringify(todoList));
+
   }
 
-  return {name, storeTodoItem, todoList};
+  //retrieving data from localStorage
+  function retrieveTodoItem(todoIndex, prop){
+
+  }
+
+  localStorage.setItem(projectIndex, '');
+  return {name, storeTodoItem};
 }
