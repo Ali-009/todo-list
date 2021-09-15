@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    index: './src/index.js',
+    view: './src/view.js',
     controller: './src/controller.js',
   },
   output: {
