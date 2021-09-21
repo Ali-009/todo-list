@@ -1,5 +1,4 @@
-
-/*The model is rewritten to only read and write to localStorage, and provide todoLIst and todoItem objects*/
+/*The model is rewritten to only read and write to localStorage, and provide todoList and todoItem objects*/
 
 /*todoList is an object received from either the view or the controller. It has a name, an index and an array of todo objects*/
 
@@ -10,6 +9,15 @@ export function updateTodoList(todoList){
 
 export function retrieveTodoList(todoListIndex){
   return JSON.parse(localStorage.getItem(todoListIndex));
+}
+
+export function retrieveAllTodoLists(){
+
+  let todoList = [];
+  for(let i = 0; i < localStorage.length; i++){
+    todoList[i] = retrieveTodoList(i);
+  }
+  return todoList;
 }
 
 export function removeTodoList(todoListIndex){
