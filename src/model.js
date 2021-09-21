@@ -1,29 +1,26 @@
 
-let project = [];
+/*The model is rewritten to only read and write to localStorage, and do nothing else*/
 
-export function projectFactory(name){
+/*todoList is an object received from either the view or the controller. It has a name, an index and an array of todo objects*/
 
-  let projectIndex = localStorage.length;
+export function updateTodoList(todoList){
+  localStorage.setItem(todoList.index, JSON.stringify(todoList));
+}
 
-  //stores a todo in the localStorage in an appropriate project
-  function storeTodoItem(todo){
+export function retrieveTodoList(todoListIndex){
+  return JSON.parse(localStorage.getItem(todoListIndex));
+}
 
-    /*JSON is used here because localStorage only accepts strings. The string stored in localStorage is first retrieved and then fully updated with every call to storeTodoItem*/
-    let todoList = [];
-    if(localStorage.getItem(projectIndex)){
-      todoList = JSON.parse(localStorage.getItem(projectIndex));
-    }
+//Creates a new Todo-list
+export function todoListFactory(name){
 
-    todoList.push(todo);
-    localStorage.setItem(projectIndex, JSON.stringify(todoList));
+  const index = localStorage.length
+  let todo = []; //An array of todoItem objects
+  return {index, name, todo};
+}
 
-  }
+export function todoItemFactory(title = '', description = '',
+    dueDate = '', priority = '', checked = ''){
 
-  //retrieving data from localStorage
-  function retrieveTodoItem(todoIndex, prop){
-
-  }
-
-  localStorage.setItem(projectIndex, '');
-  return {name, storeTodoItem};
+  return {title, description, dueDate, priority, checked};
 }
