@@ -41,8 +41,8 @@ export function todoListFactory(name){
   return {index, name, todo};
 }
 
-export function todoItemFactory(title = '', description = '',
-    dueDate = '', priority = '', checked = ''){
+export function todoItemFactory(title = 'Title', description =
+    'Description', dueDate = '', priority = '', checked = ''){
 
   return {title, description, dueDate, priority, checked};
 }
