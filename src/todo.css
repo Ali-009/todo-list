@@ -9,10 +9,6 @@
   align-items: center;
 }
 
-#back-button{
-  margin-top: 20px;
-}
-
 #todo-list-container{
 
   display: flex;
@@ -26,6 +22,10 @@
 .todo-container{
   border: thin solid black;
   padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 
 #add-todo-list{
@@ -39,6 +39,19 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 15px;
+}
+
+#wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#navigation-container{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 }
 
 .duedate, .priority, .checked{
@@ -85,5 +98,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
+}
+
+.form-control{
+  display: flex;
+  flex-direction: row;
+  align-self: flex-end;
   gap: 10px;
 }

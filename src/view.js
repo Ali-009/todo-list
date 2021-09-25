@@ -1,5 +1,8 @@
 import {todoListFactory, todoItemFactory, updateTodoList, retrieveTodoList, retrieveAllTodoLists, removeTodoList} from './model.js';
 
+import backIcon from './assets/outline_arrow_back_black_24dp.png'
+import addIcon from './assets/outline_add_black_24dp.png'
+
 import {testTodoListCreation} from '../console-tests.js'
 import './todo.css'
 
@@ -15,62 +18,97 @@ function loadAllTodoLists(){
   let todoListArray = retrieveAllTodoLists();
 
   for(let i = 0; i < todoListArray.length; i++){
-    createTodoListContainer(todoListArray[i]);
+    let todoContainer = createTodoListContainer(todoListArray[i]);
+    todoListContainer.appendChild(todoContainer);
   }
 
   const addTodoList = document.createElement('div');
   addTodoList.setAttribute('id','add-todo-list');
   addTodoList.textContent = '+';
   todoListContainer.appendChild(addTodoList);
-
-  const todoListDivs = document.querySelectorAll('.todo-container');
-  todoListDivs.forEach(todoList => todoList.addEventListener('click', createTodoList));
 }
 
-/*creates a contianer for a single todoList, simply displaying its name. The list once clicked displays its content*/
+/*creates a contianer for a single todoList, simply displaying its name. The todoList once clicked displays its content*/
 function createTodoListContainer(todoList){
 
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-container');
-  todoContainer.setAttribute('data-index', todoList.index);
+  todoContainer.setAttribute('data-display', todoList.index);
 
   todoContainer.textContent = todoList.name;
-  document.querySelector('#todo-list-container').appendChild(todoContainer);
+
+  todoContainer.addEventListener('click', createTodoListEventHandler, false);
+
+  //Creating a button to remove the todoList
+  const todoListRemoveButton = document.createElement('button');
+  todoListRemoveButton.setAttribute('data-remove', todoList.index);
+  todoListRemoveButton.textContent = 'X';
+  todoListRemoveButton.addEventListener('click', removeTodoListEventHandler, false);
+  todoContainer.appendChild(todoListRemoveButton);
+
+  return todoContainer;
+
+}
+
+function removeTodoListEventHandler(e){
+  //This instruction is important as it prevents createTodoList from triggering when what we want is to remove a ToDoList
+  e.stopPropagation();
 }
 
 /*Handles the event of clicking a todoList by displaying the list's content*/
-function createTodoList(e){
+function createTodoListEventHandler(e){
 
   document.querySelector('#todo-list-container').remove();
-  let backButton = createBackButton();
 
-  let index = e.target.dataset.index;
-  let todoList = retrieveTodoList(index);
+  //The below elements wrap other elements for styling purposes
+  const wrapper = document.createElement('div');
+  wrapper.setAttribute('id', 'wrapper');
+  const navigationContainer = document.createElement('div');
+  navigationContainer.setAttribute('id','navigation-container');
   const todoContainer = document.createElement('div');
   todoContainer.setAttribute('id','todo-items-container');
+
+  let index = e.target.dataset.display;
+  let todoList = retrieveTodoList(index);
 
   for(let i = 0; i < todoList.todo.length; i++){
     todoContainer.appendChild(createTodoItem(todoList.todo[i], i));
   }
 
-  pageContainer.appendChild(todoContainer);
-  pageContainer.appendChild(backButton);
+  navigationContainer.appendChild(createBackButton());
+  navigationContainer.appendChild(createAddTodoItemButton());
+
+  wrapper.appendChild(navigationContainer);
+  wrapper.appendChild(todoContainer);
+
+  pageContainer.appendChild(wrapper);
 
 }
 
 //provide a button to return to the homepage
 function createBackButton(){
-  const backButton = document.createElement('button');
+  const backButton = document.createElement('img');
   backButton.setAttribute('id','back-button');
-  backButton.textContent = 'Back';
+  backButton.setAttribute('src', backIcon);
 
   backButton.addEventListener('click', (e) => {
     document.querySelector('#todo-items-container').remove();
     document.querySelector('#back-button').remove();
+    document.querySelector('#add-todo-button').remove();
     loadAllTodoLists();
   });
 
   return backButton;
+}
+
+function createAddTodoItemButton(){
+  const addButton = document.createElement('img');
+  addButton.setAttribute('id','add-todo-button');
+  addButton.setAttribute('src', addIcon);
+
+  //The button's event listener should go here
+
+  return addButton;
 }
 
 //Responsible of displaying a single todoItem within a TodoList
@@ -118,6 +156,22 @@ function createTodoItem(todoItem, index){
     elementArray[i].setAttribute('id', `${elementIdArray[i]}-${index}`);
     label.appendChild(elementArray[i]);
   }
+
+  const formControl = document.createElement('div');
+  formControl.setAttribute('class','form-control');
+
+  const saveButton = document.createElement('button');
+  saveButton.setAttribute('data-save-item', index);
+  const removeButton = document.createElement('button');
+  removeButton.setAttribute('data-remove-item', index);
+
+  saveButton.textContent = 'Save';
+  removeButton.textContent = 'Remove';
+
+  formControl.appendChild(removeButton);
+  formControl.appendChild(saveButton);
+
+  todoItemElement.appendChild(formControl);
 
   return todoItemElement;
 }
