@@ -25,10 +25,8 @@ function loadAllTodoLists(){
     todoListContainer.appendChild(todoContainer);
   }
 
-  const addTodoList = document.createElement('img');
-  addTodoList.setAttribute('id','add-todo-list');
-  addTodoList.setAttribute('src', addIcon);
-  todoListContainer.appendChild(addTodoList);
+  const addTodoListButton = createAddTodoListButton();
+  todoListContainer.appendChild(addTodoListButton);
 }
 
 /*creates a contianer for a single todoList, simply displaying its name. The todoList once clicked displays its content*/
@@ -40,24 +38,43 @@ function createSingleTodoListDiv(todoList){
 
   todoContainer.textContent = todoList.name;
 
-  todoContainer.addEventListener('click', displayTodoListContent, false);
+  todoContainer.addEventListener('click', displayTodoListContent);
 
   //Creating a button to remove the todoList
-  const todoListRemoveButton = document.createElement('img');
-  todoListRemoveButton.setAttribute('data-remove', todoList.index);
-  todoListRemoveButton.setAttribute('src', deleteIcon);
-  todoListRemoveButton.style.cursor = 'pointer';
-  todoListRemoveButton.addEventListener('click', removeTodoListEvent, false);
+  const todoListRemoveButton = createRemoveTodoListButton(todoList.index);
   todoContainer.appendChild(todoListRemoveButton);
 
   return todoContainer;
 
 }
 
-//Event handler for removing an entire todo-list
-function removeTodoListEvent(e){
-  //This instruction is important as it prevents createTodoList from triggering when what we want is to remove a ToDoList
-  e.stopPropagation();
+//Add todo-list button
+function createAddTodoListButton(){
+  const addTodoListButton = document.createElement('img');
+  addTodoListButton.setAttribute('id','add-todo-list');
+  addTodoListButton.setAttribute('src', addIcon);
+
+  addTodoListButton.addEventListener('click', (e) => {
+
+  });
+
+  return addTodoListButton;
+}
+//Every todolist has a button to remove it entirely
+function createRemoveTodoListButton(index){
+
+  const todoListRemoveButton = document.createElement('img');
+  todoListRemoveButton.setAttribute('data-remove', index);
+  todoListRemoveButton.setAttribute('src', deleteIcon);
+  todoListRemoveButton.style.cursor = 'pointer';
+
+  todoListRemoveButton.addEventListener('click', (e) => {
+    //This instruction is important as it prevents createTodoList from triggering when what we want is to remove a ToDoList
+    e.stopPropagation();
+  });
+
+  return todoListRemoveButton;
+
 }
 
 /*The event handler for clicking a todoList. Displays all of the list's content*/

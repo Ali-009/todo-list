@@ -60,8 +60,5 @@ function findCurrentDate(){
   let day = currentDate.getDate();
   day > 10 ? day : day = '0' + day;
 
-  const currentDateString = `${year}-${month}-${day}`;
-  console.log(currentDateString);
-  return currentDateString;
-
+  return `${year}-${month}-${day}`;  
 }
