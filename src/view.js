@@ -2,8 +2,9 @@ import {todoListFactory, todoItemFactory, updateTodoList, retrieveTodoList, retr
 
 import backIcon from './assets/outline_arrow_back_black_24dp.png';
 import addIcon from './assets/outline_add_black_24dp.png';
+import deleteIcon from './assets/outline_clear_black_24dp.png';
 
-import {removeTodoItem} from './controller.js';
+import {updateTodoItem, removeTodoItem} from './controller.js';
 
 import {testTodoListCreation} from '../console-tests.js';
 import './todo.css';
@@ -24,9 +25,9 @@ function loadAllTodoLists(){
     todoListContainer.appendChild(todoContainer);
   }
 
-  const addTodoList = document.createElement('div');
+  const addTodoList = document.createElement('img');
   addTodoList.setAttribute('id','add-todo-list');
-  addTodoList.textContent = '+';
+  addTodoList.setAttribute('src', addIcon);
   todoListContainer.appendChild(addTodoList);
 }
 
@@ -42,9 +43,10 @@ function createSingleTodoListDiv(todoList){
   todoContainer.addEventListener('click', displayTodoListContent, false);
 
   //Creating a button to remove the todoList
-  const todoListRemoveButton = document.createElement('button');
+  const todoListRemoveButton = document.createElement('img');
   todoListRemoveButton.setAttribute('data-remove', todoList.index);
-  todoListRemoveButton.textContent = 'X';
+  todoListRemoveButton.setAttribute('src', deleteIcon);
+  todoListRemoveButton.style.cursor = 'pointer';
   todoListRemoveButton.addEventListener('click', removeTodoListEvent, false);
   todoContainer.appendChild(todoListRemoveButton);
 
@@ -123,6 +125,7 @@ function createTodoItem(todoItem, index){
 
   //Title property
   const titleElement = document.createElement('input');
+  titleElement.setAttribute('type','text');
   titleElement.value = todoItem.title;
 
   //Description property
@@ -147,7 +150,7 @@ function createTodoItem(todoItem, index){
   //Appending elments alongside their labels as todoItemElement
   let elementArray = [titleElement, descriptionElement, priorityElement, dateElement, checkedElement];
   let elementIdArray = ['title', 'description', 'priority',
-      'due-date','done'];
+      'due-date','checked'];
   let labelTextArray = ['', '', 'Priority: ',
       'Due Date: ', 'Done'];
   for(let i = 0; i < elementArray.length; i++){
@@ -179,6 +182,8 @@ function createTodoItem(todoItem, index){
 function createTodoItemSaveButton(index){
   const saveButton = document.createElement('button');
   saveButton.setAttribute('data-save-item', index);
+
+  saveButton.addEventListener('click', updateTodoItem);
 
   return saveButton;
 }
