@@ -42,6 +42,16 @@ export function updateTodoItem(e){
   updateTodoList(todoList);
 }
 
+export function createTodoItem(){
+    const todoListIndex = obtainTodoListIndex();
+    let todoList = retrieveTodoList(todoListIndex);
+
+    let newTodoItem = todoItemFactory();
+    todoList.todo.push(newTodoItem);
+
+    updateTodoList(todoList);
+}
+
 //Helps us know which todo-list we are currently viewing
 function obtainTodoListIndex(){
   const todoItemsContainer = document.querySelector('#todo-items-container');

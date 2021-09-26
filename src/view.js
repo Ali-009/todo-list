@@ -4,7 +4,7 @@ import backIcon from './assets/outline_arrow_back_black_24dp.png';
 import addIcon from './assets/outline_add_black_24dp.png';
 import deleteIcon from './assets/outline_clear_black_24dp.png';
 
-import {updateTodoItem, removeTodoItem} from './controller.js';
+import {createTodoItem, updateTodoItem, removeTodoItem} from './controller.js';
 
 import {testTodoListCreation} from '../console-tests.js';
 import './todo.css';
@@ -78,7 +78,7 @@ function displayTodoListContent(e){
   let todoList = retrieveTodoList(index);
 
   for(let i = 0; i < todoList.todo.length; i++){
-    todoContainer.appendChild(createTodoItem(todoList.todo[i], i));
+    todoContainer.appendChild(displayTodoItem(todoList.todo[i], i));
   }
 
   navigationContainer.appendChild(createBackButton());
@@ -111,12 +111,25 @@ function createAddTodoItemButton(){
   addButton.setAttribute('src', addIcon);
 
   //The button's event listener should go here
+  addButton.addEventListener('click', (e) => {
+    createTodoItem();
+
+    const todoItemsContainer = document.querySelector('#todo-items-container');
+    const todoListIndex = todoItemsContainer.dataset.todoListIndex;
+
+    const todoList = retrieveTodoList(todoListIndex).todo;
+    const newTodoItem = todoList[todoList.length - 1];
+    const todoItemElement =
+    displayTodoItem(newTodoItem, todoList.length - 1);
+
+    todoItemsContainer.appendChild(todoItemElement);
+  });
 
   return addButton;
 }
 
 //Responsible of displaying a single todoItem within a TodoList
-function createTodoItem(todoItem, index){
+function displayTodoItem(todoItem, index){
 
   //create a container for a todoItem in the todoList
   const todoItemElement = document.createElement('div');
