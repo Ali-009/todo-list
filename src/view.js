@@ -1,10 +1,12 @@
 import {todoListFactory, todoItemFactory, updateTodoList, retrieveTodoList, retrieveAllTodoLists, removeTodoList} from './model.js';
 
-import backIcon from './assets/outline_arrow_back_black_24dp.png'
-import addIcon from './assets/outline_add_black_24dp.png'
+import backIcon from './assets/outline_arrow_back_black_24dp.png';
+import addIcon from './assets/outline_add_black_24dp.png';
 
-import {testTodoListCreation} from '../console-tests.js'
-import './todo.css'
+import {removeTodoItem} from './controller.js';
+
+import {testTodoListCreation} from '../console-tests.js';
+import './todo.css';
 
 const pageContainer = document.querySelector('#page-container');
 
@@ -18,7 +20,7 @@ function loadAllTodoLists(){
   let todoListArray = retrieveAllTodoLists();
 
   for(let i = 0; i < todoListArray.length; i++){
-    let todoContainer = createTodoListContainer(todoListArray[i]);
+    let todoContainer = createSingleTodoListDiv(todoListArray[i]);
     todoListContainer.appendChild(todoContainer);
   }
 
@@ -29,7 +31,7 @@ function loadAllTodoLists(){
 }
 
 /*creates a contianer for a single todoList, simply displaying its name. The todoList once clicked displays its content*/
-function createTodoListContainer(todoList){
+function createSingleTodoListDiv(todoList){
 
   const todoContainer = document.createElement('div');
   todoContainer.classList.add('todo-container');
@@ -37,26 +39,27 @@ function createTodoListContainer(todoList){
 
   todoContainer.textContent = todoList.name;
 
-  todoContainer.addEventListener('click', createTodoListEventHandler, false);
+  todoContainer.addEventListener('click', displayTodoListContent, false);
 
   //Creating a button to remove the todoList
   const todoListRemoveButton = document.createElement('button');
   todoListRemoveButton.setAttribute('data-remove', todoList.index);
   todoListRemoveButton.textContent = 'X';
-  todoListRemoveButton.addEventListener('click', removeTodoListEventHandler, false);
+  todoListRemoveButton.addEventListener('click', removeTodoListEvent, false);
   todoContainer.appendChild(todoListRemoveButton);
 
   return todoContainer;
 
 }
 
-function removeTodoListEventHandler(e){
+//Event handler for removing an entire todo-list
+function removeTodoListEvent(e){
   //This instruction is important as it prevents createTodoList from triggering when what we want is to remove a ToDoList
   e.stopPropagation();
 }
 
-/*Handles the event of clicking a todoList by displaying the list's content*/
-function createTodoListEventHandler(e){
+/*The event handler for clicking a todoList. Displays all of the list's content*/
+function displayTodoListContent(e){
 
   document.querySelector('#todo-list-container').remove();
 
@@ -67,6 +70,7 @@ function createTodoListEventHandler(e){
   navigationContainer.setAttribute('id','navigation-container');
   const todoContainer = document.createElement('div');
   todoContainer.setAttribute('id','todo-items-container');
+  todoContainer.setAttribute('data-todo-list-index', e.target.dataset.display);
 
   let index = e.target.dataset.display;
   let todoList = retrieveTodoList(index);
@@ -92,9 +96,7 @@ function createBackButton(){
   backButton.setAttribute('src', backIcon);
 
   backButton.addEventListener('click', (e) => {
-    document.querySelector('#todo-items-container').remove();
-    document.querySelector('#back-button').remove();
-    document.querySelector('#add-todo-button').remove();
+    document.querySelector('#wrapper').remove();
     loadAllTodoLists();
   });
 
@@ -117,7 +119,7 @@ function createTodoItem(todoItem, index){
   //create a container for a todoItem in the todoList
   const todoItemElement = document.createElement('div');
   todoItemElement.classList.add('todo-item');
-  todoItemElement.setAttribute('data-index', index);
+  todoItemElement.setAttribute('data-todo-item', index);
 
   //Title property
   const titleElement = document.createElement('input');
@@ -160,10 +162,8 @@ function createTodoItem(todoItem, index){
   const formControl = document.createElement('div');
   formControl.setAttribute('class','form-control');
 
-  const saveButton = document.createElement('button');
-  saveButton.setAttribute('data-save-item', index);
-  const removeButton = document.createElement('button');
-  removeButton.setAttribute('data-remove-item', index);
+  const saveButton = createTodoItemSaveButton(index);
+  const removeButton = createTodoItemRemoveButton(index);
 
   saveButton.textContent = 'Save';
   removeButton.textContent = 'Remove';
@@ -174,6 +174,27 @@ function createTodoItem(todoItem, index){
   todoItemElement.appendChild(formControl);
 
   return todoItemElement;
+}
+
+function createTodoItemSaveButton(index){
+  const saveButton = document.createElement('button');
+  saveButton.setAttribute('data-save-item', index);
+
+  return saveButton;
+}
+
+function createTodoItemRemoveButton(index){
+  const removeButton = document.createElement('button');
+  removeButton.setAttribute('data-remove-item', index);
+
+  removeButton.addEventListener('click', (e) => {
+    //removing the todo-item from localStorage
+    removeTodoItem(e);
+    //removing the todo-item from the display
+    document.querySelector(`div[data-todo-item="${e.target.dataset.removeItem}"]`).remove();
+  });
+
+  return removeButton;
 }
 
 //testing the view.js module, to be removed later
