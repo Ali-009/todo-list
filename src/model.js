@@ -43,6 +43,25 @@ export function todoListFactory(name){
 
 export function todoItemFactory(title = 'Title', description =
     'Description', dueDate = '', priority = '', checked = ''){
-
+  //set the date to currentDate if no date has been provided
+  if(!dueDate){
+    dueDate = findCurrentDate();
+  }
   return {title, description, dueDate, priority, checked};
+}
+
+function findCurrentDate(){
+  const currentDate = new Date();
+
+  /*formatting is required for compatibility with the html date input element*/
+  let year = currentDate.getFullYear();
+  let month = currentDate.getMonth();
+  month > 10 ? month : month = '0' + month;
+  let day = currentDate.getDate();
+  day > 10 ? day : day = '0' + day;
+
+  const currentDateString = `${year}-${month}-${day}`;
+  console.log(currentDateString);
+  return currentDateString;
+
 }
