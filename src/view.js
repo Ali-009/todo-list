@@ -193,6 +193,7 @@ function createTitleEditButton(){
     const titleInputText = document.createElement('input');
     titleInputText.setAttribute('type', 'text');
     titleInputText.setAttribute('id','title-input');
+
     document.querySelector('#todo-list-title').
     replaceWith(titleInputText);
 
@@ -211,24 +212,7 @@ function createEditConfirmButton(){
   confirmButton.setAttribute('id', 'confirm-edit-button');
   confirmButton.setAttribute('src', confirmIcon);
 
-  confirmButton.addEventListener('click', (e) => {
-    const todoItemsContainer = document.
-    querySelector('#todo-items-container');
-    const todoListIndex = todoItemsContainer.dataset.todoListIndex;
-
-    //the controller edits the todo-list title
-    editTodoListTitle(todoListIndex);
-
-    //displaying the new todolist text
-    let todoList = retrieveTodoList(todoListIndex);
-    const todoListTitleText = displayTodoListTitle(todoList);
-    document.querySelector('#title-input').
-        replaceWith(todoListTitleText);
-
-    /*replacing the confirm button with the edit button and removing the cancel button*/
-    e.target.replaceWith(createTitleEditButton());
-    document.querySelector('#cancel-edit-button').remove();
-  });
+  confirmButton.addEventListener('click', editConfirmHandler);
 
   return confirmButton;
 }
@@ -342,6 +326,28 @@ function createTodoItemRemoveButton(index){
   });
 
   return removeButton;
+}
+
+//Handles the event of confirming title edit
+/*This was originally written to handle both the confirm button click
+and "Enter" key presses*/
+function editConfirmHandler(e){
+  const todoItemsContainer = document.
+  querySelector('#todo-items-container');
+  const todoListIndex = todoItemsContainer.dataset.todoListIndex;
+
+  //the controller edits the todo-list title
+  editTodoListTitle(todoListIndex);
+
+  //displaying the new todolist text
+  let todoList = retrieveTodoList(todoListIndex);
+  const todoListTitleText = displayTodoListTitle(todoList);
+  document.querySelector('#title-input').
+      replaceWith(todoListTitleText);
+
+  /*replacing the confirm button with the edit button and removing the cancel button*/
+  e.target.replaceWith(createTitleEditButton());
+  document.querySelector('#cancel-edit-button').remove();
 }
 
 //testing the view.js module, to be removed later
