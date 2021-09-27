@@ -1,10 +1,10 @@
-import {todoListFactory, todoItemFactory, updateTodoList, retrieveTodoList, retrieveAllTodoLists, removeTodoList} from './model.js';
+import {retrieveTodoList, retrieveAllTodoLists} from './model.js';
 
 import backIcon from './assets/outline_arrow_back_black_24dp.png';
 import addIcon from './assets/outline_add_black_24dp.png';
 import deleteIcon from './assets/outline_clear_black_24dp.png';
 
-import {createTodoItem, updateTodoItem, removeTodoItem} from './controller.js';
+import {createTodoItem, updateTodoItem, removeTodoItem, removeTodoList} from './controller.js';
 
 import {testTodoListCreation} from '../console-tests.js';
 import './todo.css';
@@ -71,6 +71,27 @@ function createRemoveTodoListButton(index){
   todoListRemoveButton.addEventListener('click', (e) => {
     //This instruction is important as it prevents createTodoList from triggering when what we want is to remove a ToDoList
     e.stopPropagation();
+
+    let todoListIndex = e.target.dataset.remove;
+    const todoContainer = document.
+        querySelector(`div[data-display="${todoListIndex}"]`);
+    todoContainer.remove();
+
+    //remove todolist from localStorage
+    removeTodoList(todoListIndex);
+
+    //shifting all todolists one step back if necessary
+    while(document.
+      querySelector(`.todo-container[data-display="${parseInt(todoListIndex) + 1}"]`)){
+
+      let todoContainer = document.querySelector(`.todo-container[data-display="${parseInt(todoListIndex) + 1}"]`);
+      let removeButton = todoContainer.querySelector('img[data-remove]');
+
+      todoContainer.dataset.display = todoListIndex;
+      removeButton.dataset.remove = todoListIndex;
+
+      todoListIndex++;
+    }
   });
 
   return todoListRemoveButton;

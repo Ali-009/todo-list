@@ -25,11 +25,15 @@ export function removeTodoList(todoListIndex){
 
   //find the item positioned after the removed one and change its index
   //This shifts an item one step backward, after one has been removed
-  if(retrieveTodoList(todoListIndex + 1)){
-    let shiftedTodoList = retrieveTodoList(todoListIndex + 1)
-        .index = todoListIndex;
+  todoListIndex = parseInt(todoListIndex);
+
+  while(retrieveTodoList(todoListIndex + 1)){
+    let shiftedTodoList = retrieveTodoList(todoListIndex + 1);
+    shiftedTodoList.index = todoListIndex;
     updateTodoList(shiftedTodoList);
     localStorage.removeItem(todoListIndex + 1);
+
+    todoListIndex++;
   }
 }
 
@@ -60,5 +64,5 @@ function findCurrentDate(){
   let day = currentDate.getDate();
   day > 10 ? day : day = '0' + day;
 
-  return `${year}-${month}-${day}`;  
+  return `${year}-${month}-${day}`;
 }

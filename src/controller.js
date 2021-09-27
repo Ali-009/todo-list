@@ -1,4 +1,6 @@
-import {todoListFactory, todoItemFactory, updateTodoList, retrieveTodoList, removeTodoList} from './model.js';
+import {todoListFactory, todoItemFactory, updateTodoList, retrieveTodoList} from './model.js';
+
+export {removeTodoList} from './model.js';
 
 export function removeTodoItem(e){
   const todoListIndex = obtainTodoListIndex();
