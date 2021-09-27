@@ -1,12 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  entry: {
-    view: './src/view.js',
-    controller: './src/controller.js',
-  },
+  entry: './src/view.js',
   output: {
-    filename: '[name].js',
+    filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
   },
   devtool: 'eval',

@@ -6,9 +6,8 @@ import deleteIcon from './assets/outline_clear_black_24dp.png';
 import editIcon from './assets/outline_drive_file_rename_outline_black_24dp.png';
 import confirmIcon from './assets/outline_check_black_24dp.png';
 
-import {createTodoItem, updateTodoItem, removeTodoItem, removeTodoList, editTodoListTitle} from './controller.js';
+import {createTodoItem, updateTodoItem, removeTodoItem, createTodoList, removeTodoList, editTodoListTitle} from './controller.js';
 
-import {testTodoListCreation} from '../console-tests.js';
 import './todo.css';
 
 const pageContainer = document.querySelector('#page-container');
@@ -57,7 +56,12 @@ function createAddTodoListButton(){
   addTodoListButton.setAttribute('src', addIcon);
 
   addTodoListButton.addEventListener('click', (e) => {
+    const todoListDiv = createSingleTodoListDiv(createTodoList());
+    const todoListContainer = document.
+        querySelector('#todo-list-container');
+    const addToDoButton = document.querySelector('#add-todo-list');
 
+    todoListContainer.insertBefore(todoListDiv, addToDoButton);
   });
 
   return addTodoListButton;
@@ -133,7 +137,7 @@ function displayTodoListContent(e){
 
 }
 
-//provide a button to return to the homepage
+//The elements below are part of the navigation container
 function createBackButton(){
   const backButton = document.createElement('img');
   backButton.setAttribute('id','back-button');
@@ -341,5 +345,4 @@ function createTodoItemRemoveButton(index){
 }
 
 //testing the view.js module, to be removed later
-testTodoListCreation();
 loadAllTodoLists();

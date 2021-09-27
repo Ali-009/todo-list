@@ -2,6 +2,15 @@ import {todoListFactory, todoItemFactory, updateTodoList, retrieveTodoList} from
 
 export {removeTodoList} from './model.js';
 
+export function createTodoList(){
+  let newTodoList = todoListFactory('New Todo-list');
+  let defaultTodoItem = todoItemFactory();
+  newTodoList.todo[0] = defaultTodoItem;
+
+  updateTodoList(newTodoList);
+  return newTodoList;
+}
+
 export function removeTodoItem(e){
   const todoListIndex = obtainTodoListIndex();
   const itemIndex = e.target.dataset.removeItem;
