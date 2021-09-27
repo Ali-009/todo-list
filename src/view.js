@@ -194,6 +194,9 @@ function createTitleEditButton(){
 
     document.querySelector('#edit-title-button').
     replaceWith(createEditConfirmButton());
+    //appending the cancel button
+    document.querySelector('#navigation-container').
+    appendChild(createEditCancelButton());
   });
 
   return editButton;
@@ -218,11 +221,36 @@ function createEditConfirmButton(){
     document.querySelector('#title-input').
         replaceWith(todoListTitleText);
 
-    //replacing the confirm button with the edit button
+    /*replacing the confirm button with the edit button and removing the cancel button*/
     e.target.replaceWith(createTitleEditButton());
+    document.querySelector('#cancel-edit-button').remove();
   });
 
   return confirmButton;
+}
+
+function createEditCancelButton(){
+  const cancelButton = document.createElement('img');
+  cancelButton.setAttribute('id', 'cancel-edit-button');
+  cancelButton.setAttribute('src', deleteIcon);
+
+  cancelButton.addEventListener('click', (e) => {
+    const todoItemsContainer = document.
+    querySelector('#todo-items-container');
+    const todoListIndex = todoItemsContainer.dataset.todoListIndex;
+    //displaying the old todo-list
+    let todoList = retrieveTodoList(todoListIndex);
+    const todoListTitleText = displayTodoListTitle(todoList);
+    document.querySelector('#title-input').
+        replaceWith(todoListTitleText);
+
+    /*replacing the confirm button with the edit button, and removing the cancel button*/
+    document.querySelector('#confirm-edit-button').
+    replaceWith(createTitleEditButton());
+    e.target.remove();
+  });
+
+  return cancelButton;
 }
 
 //Responsible of displaying a single todoItem within a TodoList
