@@ -17,6 +17,7 @@
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
+  align-items: center;
 
 }
 
@@ -27,6 +28,8 @@
   flex-direction: row;
   align-items: center;
   gap: 10px;
+
+  cursor: default;
 }
 
 #add-todo-list{
@@ -41,23 +44,37 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 15px;
+  justify-content: center;
 }
 
 #wrapper{
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: 25px;
 }
 
 #navigation-container{
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 20px;
   align-items: center;
+  justify-content: center;
 }
 
 #navigation-container > *{
   cursor: pointer;
+}
+
+#todo-list-title{
+  cursor: default;
+  border: none;
+  font-family: sans-serif;
+  font-style: bold;
+}
+
+#title-input{
+  cursor: text;
 }
 
 .duedate, .priority, .checked{

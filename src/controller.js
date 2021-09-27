@@ -54,6 +54,13 @@ export function createTodoItem(){
     updateTodoList(todoList);
 }
 
+export function editTodoListTitle(index){
+
+  let todoList = retrieveTodoList(index);
+  todoList.name = document.querySelector('#title-input').value;
+  updateTodoList(todoList);
+}
+
 //Helps us know which todo-list we are currently viewing
 function obtainTodoListIndex(){
   const todoItemsContainer = document.querySelector('#todo-items-container');

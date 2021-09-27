@@ -3,8 +3,10 @@ import {retrieveTodoList, retrieveAllTodoLists} from './model.js';
 import backIcon from './assets/outline_arrow_back_black_24dp.png';
 import addIcon from './assets/outline_add_black_24dp.png';
 import deleteIcon from './assets/outline_clear_black_24dp.png';
+import editIcon from './assets/outline_drive_file_rename_outline_black_24dp.png';
+import confirmIcon from './assets/outline_check_black_24dp.png';
 
-import {createTodoItem, updateTodoItem, removeTodoItem, removeTodoList} from './controller.js';
+import {createTodoItem, updateTodoItem, removeTodoItem, removeTodoList, editTodoListTitle} from './controller.js';
 
 import {testTodoListCreation} from '../console-tests.js';
 import './todo.css';
@@ -121,6 +123,8 @@ function displayTodoListContent(e){
 
   navigationContainer.appendChild(createBackButton());
   navigationContainer.appendChild(createAddTodoItemButton());
+  navigationContainer.appendChild(displayTodoListTitle(todoList));
+  navigationContainer.appendChild(createTitleEditButton());
 
   wrapper.appendChild(navigationContainer);
   wrapper.appendChild(todoContainer);
@@ -164,6 +168,61 @@ function createAddTodoItemButton(){
   });
 
   return addButton;
+}
+
+function displayTodoListTitle(todoList){
+
+  const titleElement = document.createElement('h2');
+  titleElement.setAttribute('id', 'todo-list-title');
+  titleElement.textContent = todoList.name;
+
+  return titleElement;
+
+}
+
+function createTitleEditButton(){
+  const editButton = document.createElement('img');
+  editButton.setAttribute('id', 'edit-title-button');
+  editButton.setAttribute('src', editIcon);
+
+  editButton.addEventListener('click', (e) => {
+    const titleInputText = document.createElement('input');
+    titleInputText.setAttribute('type', 'text');
+    titleInputText.setAttribute('id','title-input');
+    document.querySelector('#todo-list-title').
+    replaceWith(titleInputText);
+
+    document.querySelector('#edit-title-button').
+    replaceWith(createEditConfirmButton());
+  });
+
+  return editButton;
+}
+
+function createEditConfirmButton(){
+  const confirmButton = document.createElement('img');
+  confirmButton.setAttribute('id', 'confirm-edit-button');
+  confirmButton.setAttribute('src', confirmIcon);
+
+  confirmButton.addEventListener('click', (e) => {
+    const todoItemsContainer = document.
+    querySelector('#todo-items-container');
+    const todoListIndex = todoItemsContainer.dataset.todoListIndex;
+
+    //the controller edits the todo-list title
+    editTodoListTitle(todoListIndex);
+
+    //displaying the new todolist text
+    let todoList = retrieveTodoList(todoListIndex);
+    const todoListTitleText = displayTodoListTitle(todoList);
+    document.querySelector('#title-input').
+        replaceWith(todoListTitleText);
+
+    //replacing the confirm button with the edit button
+    e.target.replaceWith(createTitleEditButton());
+  });
+
+  return confirmButton;
 }
 
 //Responsible of displaying a single todoItem within a TodoList
