@@ -247,7 +247,8 @@ function createEditCancelButton(){
   return cancelButton;
 }
 
-//Responsible of displaying a single todoItem within a TodoList
+/*Responsible of displaying a single todoItem
+alongside its properties within a TodoList*/
 function displayTodoItem(todoItem, index){
 
   //create a container for a todoItem in the todoList
