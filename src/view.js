@@ -194,6 +194,12 @@ function createTitleEditButton(){
     titleInputText.setAttribute('type', 'text');
     titleInputText.setAttribute('id','title-input');
 
+    titleInputText.addEventListener('keyup', (e) => {
+      if(e.key === 'Enter'){
+        editConfirmHandler(e);
+      }
+    });
+
     document.querySelector('#todo-list-title').
     replaceWith(titleInputText);
 
@@ -346,7 +352,8 @@ function editConfirmHandler(e){
       replaceWith(todoListTitleText);
 
   /*replacing the confirm button with the edit button and removing the cancel button*/
-  e.target.replaceWith(createTitleEditButton());
+  document.querySelector('#confirm-edit-button').
+      replaceWith(createTitleEditButton());
   document.querySelector('#cancel-edit-button').remove();
 }
 
