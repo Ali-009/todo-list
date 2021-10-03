@@ -1,9 +1,14 @@
-import {todoListFactory, todoItemFactory, updateTodoList, retrieveTodoList} from './model.js';
+import {
+  todoListFactory,
+  todoItemFactory,
+  updateTodoList,
+  retrieveTodoList,
+} from "./model.js";
 
-export {removeTodoList} from './model.js';
+export { removeTodoList } from "./model.js";
 
-export function createTodoList(){
-  let newTodoList = todoListFactory('New Todo-list');
+export function createTodoList() {
+  let newTodoList = todoListFactory("New Todo-list");
   let defaultTodoItem = todoItemFactory();
   newTodoList.todo[0] = defaultTodoItem;
 
@@ -11,7 +16,7 @@ export function createTodoList(){
   return newTodoList;
 }
 
-export function removeTodoItem(e){
+export function removeTodoItem(e) {
   const todoListIndex = obtainTodoListIndex();
   const itemIndex = e.target.dataset.removeItem;
 
@@ -21,20 +26,26 @@ export function removeTodoItem(e){
   updateTodoList(todoList);
 }
 
-export function updateTodoItem(e){
+export function updateTodoItem(e) {
   const todoListIndex = obtainTodoListIndex();
   const itemIndex = e.target.dataset.saveItem;
 
   //The order of todo properties differs from the view here to match the order defined in model.js
-  const todoProperty = ['title', 'description', 'due-date', 'priority',
-    'checked'];
+  const todoProperty = [
+    "title",
+    "description",
+    "due-date",
+    "priority",
+    "checked",
+  ];
   let todoPropertyValue = [];
 
-  for(let i = 0; i < todoProperty.length; i++){
-
-    let todoPropertyElement = document.querySelector(`#${todoProperty[i]}-${itemIndex}`);
+  for (let i = 0; i < todoProperty.length; i++) {
+    let todoPropertyElement = document.querySelector(
+      `#${todoProperty[i]}-${itemIndex}`
+    );
     //the boolean value for a checkbox is stored in 'checked' and not 'value'
-    if(todoProperty[i] !== 'checked'){
+    if (todoProperty[i] !== "checked") {
       todoPropertyValue[i] = todoPropertyElement.value;
     } else {
       todoPropertyValue[i] = todoPropertyElement.checked;
@@ -44,7 +55,7 @@ export function updateTodoItem(e){
   let todoList = retrieveTodoList(todoListIndex);
   let todoListItem = todoList.todo[itemIndex];
   let count = 0; //count to help with traversing the todoPropertValue array
-  for(let prop in todoListItem){
+  for (let prop in todoListItem) {
     todoListItem[prop] = todoPropertyValue[count];
     count++;
   }
@@ -53,26 +64,25 @@ export function updateTodoItem(e){
   updateTodoList(todoList);
 }
 
-export function createTodoItem(){
-    const todoListIndex = obtainTodoListIndex();
-    let todoList = retrieveTodoList(todoListIndex);
+export function createTodoItem() {
+  const todoListIndex = obtainTodoListIndex();
+  let todoList = retrieveTodoList(todoListIndex);
 
-    let newTodoItem = todoItemFactory();
-    todoList.todo.push(newTodoItem);
+  let newTodoItem = todoItemFactory();
+  todoList.todo.push(newTodoItem);
 
-    updateTodoList(todoList);
+  updateTodoList(todoList);
 }
 
-export function editTodoListTitle(index){
-
+export function editTodoListTitle(index) {
   let todoList = retrieveTodoList(index);
-  todoList.name = document.querySelector('#title-input').value;
+  todoList.name = document.querySelector("#title-input").value;
   updateTodoList(todoList);
 }
 
 //Helps us know which todo-list we are currently viewing
-function obtainTodoListIndex(){
-  const todoItemsContainer = document.querySelector('#todo-items-container');
+function obtainTodoListIndex() {
+  const todoItemsContainer = document.querySelector("#todo-items-container");
   const todoListIndex = todoItemsContainer.dataset.todoListIndex;
   return todoListIndex;
 }
